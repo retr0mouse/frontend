@@ -9,6 +9,7 @@ import 'package:inbank_frontend/widgets/national_id_field.dart';
 
 import '../api_service.dart';
 import '../colors.dart';
+import 'loan_amount_field.dart';
 
 // LoanForm is a StatefulWidget that displays a loan application form.
 class LoanForm extends StatefulWidget {
@@ -80,6 +81,24 @@ class _LoanFormState extends State<LoanForm> {
                             onChanged: (value) {
                               setState(() {
                                 _nationalId = value ?? '';
+                                _submitForm();
+                              });
+                            },
+                          ),
+                          LoanAmountField(
+                            loanAmount: _loanAmount,
+                            onChanged: (value) {
+                              setState(() {
+                                _loanAmount = value;
+                                _submitForm();
+                              });
+                            },
+                          ),
+                          LoanPeriodField(
+                            loanPeriod: _loanPeriod,
+                            onChanged: (value) {
+                              setState(() {
+                                _loanPeriod = value;
                                 _submitForm();
                               });
                             },
