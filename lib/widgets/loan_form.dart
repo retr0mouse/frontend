@@ -8,6 +8,7 @@ import 'package:inbank_frontend/fonts.dart';
 import 'package:inbank_frontend/widgets/national_id_field.dart';
 
 import '../api_service.dart';
+import '../button_style.dart';
 import 'loan_amount_field.dart';
 
 // LoanForm is a StatefulWidget that displays a loan application form.
@@ -35,16 +36,8 @@ class _LoanFormState extends State<LoanForm> {
       final result = await _apiService.requestLoanDecision(
           _nationalId, _loanAmount, _loanPeriod);
       setState(() {
-        int tempAmount = int.parse(result['loanAmount'].toString());
-        int tempPeriod = int.parse(result['loanPeriod'].toString());
-
-        if (tempAmount <= _loanAmount || tempPeriod > _loanPeriod) {
-          _loanAmountResult = int.parse(result['loanAmount'].toString());
-          _loanPeriodResult = int.parse(result['loanPeriod'].toString());
-        } else {
-          _loanAmountResult = _loanAmount;
-          _loanPeriodResult = _loanPeriod;
-        }
+        _loanAmountResult = int.parse(result['loanAmount'].toString());
+        _loanPeriodResult = int.parse(result['loanPeriod'].toString());
         _errorMessage = result['errorMessage'].toString();
       });
     } else {
@@ -80,7 +73,6 @@ class _LoanFormState extends State<LoanForm> {
                             onChanged: (value) {
                               setState(() {
                                 _nationalId = value ?? '';
-                                _submitForm();
                               });
                             },
                           ),
@@ -89,7 +81,6 @@ class _LoanFormState extends State<LoanForm> {
                             onChanged: (value) {
                               setState(() {
                                 _loanAmount = value;
-                                _submitForm();
                               });
                             },
                           ),
@@ -98,10 +89,10 @@ class _LoanFormState extends State<LoanForm> {
                             onChanged: (value) {
                               setState(() {
                                 _loanPeriod = value;
-                                _submitForm();
                               });
                             },
                           ),
+
                         ],
                       );
                     },
@@ -150,6 +141,11 @@ class _LoanFormState extends State<LoanForm> {
                       )
                     ],
                   ),
+                  ElevatedButton(
+                    style: buttonStyle,
+                    onPressed: _submitForm,
+                    child: Text('Submit'),
+                  ),
                   const SizedBox(height: 24.0),
                 ],
               ),
@@ -158,13 +154,12 @@ class _LoanFormState extends State<LoanForm> {
           const SizedBox(height: 16.0),
           Column(
             children: [
-               Visibility(
+              Visibility(
                 visible: _errorMessage == '',
                 child: Column(
                   children: [
                     Text(
-                      'Approved Loan Amount: ${_loanAmountResult != 0 ? _loanAmountResult : "--"} €'
-                    ),
+                        'Approved Loan Amount: ${_loanAmountResult != 0 ? _loanAmountResult : "--"} €'),
                     const SizedBox(height: 8.0),
                   ],
                 ),
@@ -174,8 +169,7 @@ class _LoanFormState extends State<LoanForm> {
                 child: Column(
                   children: [
                     Text(
-                      'Approved Loan Period: ${_loanPeriodResult != 0 ? _loanPeriodResult : "--"} months'
-                    ),
+                        'Approved Loan Period: ${_loanPeriodResult != 0 ? _loanPeriodResult : "--"} months'),
                   ],
                 ),
               ),

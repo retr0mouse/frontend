@@ -22,7 +22,7 @@ class LoanPeriodField extends StatelessWidget {
           value: loanPeriod.toDouble(),
           min: 12,
           max: 60,
-          divisions: 40,
+          divisions: 48,
           label: '$loanPeriod months',
           activeColor: AppColors.secondaryColor,
           onChanged: (double newValue) {

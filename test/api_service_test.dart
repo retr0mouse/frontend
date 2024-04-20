@@ -9,6 +9,7 @@ void main() {
   group('ApiService', () {
     late ApiService apiService;
 
+  // Test to check if the requestLoanDecision function does not return an error message
     test('requestLoanDecision returns a valid decision', () async {
       final mockClient = MockClient((request) async {
         final response = {
@@ -27,12 +28,14 @@ void main() {
       final result = await apiService.requestLoanDecision(
           personalCode, loanAmount, loanPeriod);
 
+      // Verify the request does not return an error message
       expect(result, isA<Map<String, String>>());
       expect(result['loanAmount'], '10000');
       expect(result['loanPeriod'], '12');
       expect(result['errorMessage'], '');
     });
 
+    // Test to check if the requestLoanDecision function returns an error message
     test('requestLoanDecision returns an error message', () async {
       final mockClient = MockClient((request) async {
         final response = {
@@ -52,6 +55,7 @@ void main() {
       final result = await apiService.requestLoanDecision(
           personalCode, loanAmount, loanPeriod);
 
+      // Verify the request does return an error message
       expect(result, isA<Map<String, String>>());
       expect(result['loanAmount'], '0');
       expect(result['loanPeriod'], '0');
