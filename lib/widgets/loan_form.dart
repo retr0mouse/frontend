@@ -8,7 +8,6 @@ import 'package:inbank_frontend/fonts.dart';
 import 'package:inbank_frontend/widgets/national_id_field.dart';
 
 import '../api_service.dart';
-import '../colors.dart';
 import 'loan_amount_field.dart';
 
 // LoanForm is a StatefulWidget that displays a loan application form.
@@ -107,23 +106,6 @@ class _LoanFormState extends State<LoanForm> {
                       );
                     },
                   ),
-                  const SizedBox(height: 60.0),
-                  Text('Loan Amount: $_loanAmount €'),
-                  const SizedBox(height: 8),
-                  Slider.adaptive(
-                    value: _loanAmount.toDouble(),
-                    min: 2000,
-                    max: 10000,
-                    divisions: 80,
-                    label: '$_loanAmount €',
-                    activeColor: AppColors.secondaryColor,
-                    onChanged: (double newValue) {
-                      setState(() {
-                        _loanAmount = ((newValue.floor() / 100).round() * 100);
-                        _submitForm();
-                      });
-                    },
-                  ),
                   const SizedBox(height: 4),
                   Row(
                     children: const [
@@ -146,23 +128,6 @@ class _LoanFormState extends State<LoanForm> {
                       )
                     ],
                   ),
-                  const SizedBox(height: 24.0),
-                  Text('Loan Period: $_loanPeriod months'),
-                  const SizedBox(height: 8),
-                  Slider.adaptive(
-                    value: _loanPeriod.toDouble(),
-                    min: 12,
-                    max: 60,
-                    divisions: 40,
-                    label: '$_loanPeriod months',
-                    activeColor: AppColors.secondaryColor,
-                    onChanged: (double newValue) {
-                      setState(() {
-                        _loanPeriod = ((newValue.floor() / 6).round() * 6);
-                        _submitForm();
-                      });
-                    },
-                  ),
                   const SizedBox(height: 4),
                   Row(
                     children: const [
@@ -171,7 +136,7 @@ class _LoanFormState extends State<LoanForm> {
                           padding: EdgeInsets.only(left: 12),
                           child: Align(
                               alignment: Alignment.centerLeft,
-                              child: Text('6 months')),
+                              child: Text('12 months')),
                         ),
                       ),
                       Expanded(
@@ -193,11 +158,27 @@ class _LoanFormState extends State<LoanForm> {
           const SizedBox(height: 16.0),
           Column(
             children: [
-              Text(
-                  'Approved Loan Amount: ${_loanAmountResult != 0 ? _loanAmountResult : "--"} €'),
-              const SizedBox(height: 8.0),
-              Text(
-                  'Approved Loan Period: ${_loanPeriodResult != 0 ? _loanPeriodResult : "--"} months'),
+               Visibility(
+                visible: _errorMessage == '',
+                child: Column(
+                  children: [
+                    Text(
+                      'Approved Loan Amount: ${_loanAmountResult != 0 ? _loanAmountResult : "--"} €'
+                    ),
+                    const SizedBox(height: 8.0),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: _errorMessage == '',
+                child: Column(
+                  children: [
+                    Text(
+                      'Approved Loan Period: ${_loanPeriodResult != 0 ? _loanPeriodResult : "--"} months'
+                    ),
+                  ],
+                ),
+              ),
               Visibility(
                   visible: _errorMessage != '',
                   child: Text(_errorMessage, style: errorMedium))
